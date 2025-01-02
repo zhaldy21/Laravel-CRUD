@@ -11,19 +11,18 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('profiles', function (Blueprint $table) {
+        Schema::create('cast_movies', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->text('biodata')->nullable();
-            $table->unsignedInteger('age')->nullable();
-            $table->text('address')->nullable();
-            $table->string('avatar', 255)->nullable();
-            $table->uuid('user_id')->nullable();
+            $table->uuid('movie_id');
+            $table->foreign('movie_id')->references('id')->on('movies')->onDelete('cascade');
+            $table->uuid('cast_id');
+            $table->foreign('cast_id')->references('id')->on('casts')->onDelete('cascade');
             $table->timestamps();
         });
     }
 
     public function down()
     {
-        Schema::dropIfExists('profiles');
+        Schema::dropIfExists('cast_movies');
     }
 };

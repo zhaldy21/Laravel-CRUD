@@ -11,6 +11,9 @@ class UsersSeeder extends Seeder
 {
     public function run()
     {
+        $admin = DB::table('roles')->where('name', 'Admin')->value('id');
+        $user = DB::table('roles')->where('name', 'User')->value('id');
+
         DB::table('users')->insert([
             [
                 'id' => Str::uuid(),
@@ -18,7 +21,7 @@ class UsersSeeder extends Seeder
                 'email' => 'johndoe@example.com',
                 'password' => Hash::make('password'),
                 'email_verified_at' => now(),
-                'role_id' => null, // Update with a valid role_id if needed
+                'role_id' => $admin,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -28,7 +31,7 @@ class UsersSeeder extends Seeder
                 'email' => 'janesmith@example.com',
                 'password' => Hash::make('password'),
                 'email_verified_at' => now(),
-                'role_id' => null,
+                'role_id' => $user,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],

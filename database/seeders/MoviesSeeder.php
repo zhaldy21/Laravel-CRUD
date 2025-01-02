@@ -10,6 +10,10 @@ class MoviesSeeder extends Seeder
 {
     public function run()
     {
+        $genreAction = DB::table('genres')->where('name', 'Action')->value('id');
+        $genreComedy = DB::table('genres')->where('name', 'Comedy')->value('id');
+        $genreDrama = DB::table('genres')->where('name', 'Drama')->value('id');
+
         DB::table('movies')->insert([
             [
                 'id' => Str::uuid(),
@@ -18,7 +22,7 @@ class MoviesSeeder extends Seeder
                 'poster' => 'adventure.jpg',
                 'year' => '2023',
                 'available' => true,
-                'genre_id' => null, // Update with a valid genre_id if needed
+                'genre_id' => $genreAction,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -29,7 +33,7 @@ class MoviesSeeder extends Seeder
                 'poster' => 'comedy.jpg',
                 'year' => '2022',
                 'available' => true,
-                'genre_id' => null,
+                'genre_id' => $genreComedy,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],

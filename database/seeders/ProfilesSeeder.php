@@ -10,6 +10,9 @@ class ProfilesSeeder extends Seeder
 {
     public function run()
     {
+        $johnDoe = DB::table('users')->where('name', 'John Doe')->value('id');
+        $janeSmith = DB::table('users')->where('name', 'Jane Smith')->value('id');
+
         DB::table('profiles')->insert([
             [
                 'id' => Str::uuid(),
@@ -17,7 +20,7 @@ class ProfilesSeeder extends Seeder
                 'age' => 30,
                 'address' => '123 Main Street',
                 'avatar' => 'avatar1.png',
-                'user_id' => null, // Update with a valid user_id if needed
+                'user_id' => $johnDoe,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -27,7 +30,7 @@ class ProfilesSeeder extends Seeder
                 'age' => 25,
                 'address' => '456 Elm Street',
                 'avatar' => 'avatar2.png',
-                'user_id' => null,
+                'user_id' => $janeSmith,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
