@@ -24,13 +24,17 @@
                       placeholder="Enter movie synopsis" required></textarea>
         </div>
     
-        <!-- Input Poster -->
+
+        <!-- Input Poster !-->
         <div class="mb-4">
             <label for="poster" class="block mb-2 text-sm font-medium text-gray-900">Poster</label>
             <input id="poster" name="poster" type="file" 
                    class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none focus:ring-blue-500 focus:border-blue-500" 
-                   required>
+                   required
+                   onchange="previewImage(event)">
+            <img id="posterPreview" class="mt-4 max-w-xs rounded shadow" style="display: none;" />
         </div>
+        
     
         <!-- Input Year -->
         <div class="mb-4">
@@ -63,15 +67,20 @@
             </select>
         </div>
     
-        <!-- Submit Button -->
-        <div class="mt-6">
+        <!-- Submit and Cancel Buttons -->
+        <div class="mt-6 flex justify-between">
+            <a href="{{ route('movies.index') }}" 
+            class="w-48 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 focus:ring-4 focus:ring-gray-300 text-center">
+                Cancel
+            </a>
+            
             <button type="submit" 
-                    class="w-full py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:ring-4 focus:ring-blue-300">
+                    class="w-48 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:ring-4 focus:ring-blue-300">
                 Add Movie
             </button>
-        </div>
     </form>
     
 </div>
+
 
 @endsection

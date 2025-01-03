@@ -28,7 +28,7 @@
             </a>
           </li>
           <li class='max-lg:border-b max-lg:py-3 px-3'>
-            <a href='javascript:void(0)'
+            <a href="{{ route('movies.index') }}" 
               class='hover:text-[#007bff] text-[#007bff] block font-semibold text-[15px]'>Home</a>
           </li>
           <li class='max-lg:border-b max-lg:py-3 px-3'><a href=''

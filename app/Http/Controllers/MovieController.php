@@ -67,25 +67,82 @@ class MovieController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
-    {
-        //
-    }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit($id)
     {
-        //
+        // Temukan film berdasarkan ID
+        $movie = Movie::findOrFail($id);
+
+        // Ambil semua genre
+        $genres = Genre::all();
+
+        // Tampilkan view edit dengan data film dan genre
+        return view('movies.edit', compact('movie', 'genres'));
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the specified movie in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        //
+        // Validasi input
+        $validatedData = $request->validate([
+            'title' => 'required|string|max:255',
+            'synopsis' => 'required|string',
+            'poster' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'year' => 'required|integer|min:1800|max:' . date('Y'),
+            'available' => 'nullable|boolean',
+            'genre_id' => 'required|exists:genres,id',
+        ]);
+
+        // Temukan film berdasarkan ID
+        $movie = Movie::findOrFail($id);
+
+        // Update data film
+        $movie->title = $validatedData['title'];
+        $movie->synopsis = $validatedData['synopsis'];
+        $movie->year = $validatedData['year'];
+        $movie->available = $request->has('available') ? 1 : 0;
+        $movie->genre_id = $validatedData['genre_id'];
+
+        // Simpan poster baru
+        if ($request->hasFile('poster')) {
+            $file = $request->file('poster');
+            $fileName = uniqid() . '_' . str_replace(' ', '_', $validatedData['title']) . '.' . $file->getClientOriginalExtension();
+            $folder = public_path('images/');
+            $filePath = $folder . $fileName;
+
+            // Hapus file lama hanya jika ada dan sesuai path
+            if ($movie->poster && file_exists(public_path($movie->poster))) {
+                unlink(public_path($movie->poster));
+            }
+
+            // Simpan file baru
+            $file->move($folder, $fileName);
+            $movie->poster = 'images/' . $fileName;
+        }
+
+
+        // Simpan perubahan
+        $movie->save();
+
+        // Redirect dengan pesan sukses
+        return redirect()->route('movies.index')->with('success', 'Movie updated successfully!');
+    }
+
+    public function show($id)
+    {
+        // Ambil data film berdasarkan ID
+        $movie = Movie::findOrFail($id);
+
+        // Ambil daftar genre untuk ditampilkan (jika diperlukan)
+        $genres = Genre::all();
+
+        // Tampilkan view dengan data film
+        return view('movies.view', compact('movie', 'genres'));
     }
 
     /**
